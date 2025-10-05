@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فيسبوك - تواصل مع أصدقائك وعائلتك</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            direction: rtl;
+        }
+
+        /* شريط التنقل العلوي */
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 32px;
+            color: #1877f2;
+            font-weight: 700;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px 45px 10px 15px;
+            border: none;
+            border-radius: 25px;
+            background: #f0f2f5;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            background: #fff;
+            box-shadow: 0 0 0 2px #1877f2;
+        }
+
+        .search-btn {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #65676b;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #65676b;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-icon:hover {
+            background: #e4e6ea;
+        }
+
+        .header-icon.active {
+            color: #1877f2;
+            background: #e7f3ff;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background: #e41e3f;
+            color: white;
+            font-size: 12px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* الحاوي الرئيسي */
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        /* الشريط الجانبي الأيسر */
+        .sidebar-left {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        .menu-item:hover {
+            background: #f0f2f5;
+        }
+
+        .menu-item.active {
+            background: #e7f3ff;
+            color: #1877f2;
+        }
+
+        .menu-item i {
+            font-size: 20px;
+            width: 30px;
+        }
+
+        .menu-item img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        /* منطقة المنشورات الرئيسية */
+        .main-feed {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* إنشاء منشور جديد */
+        .create-post {
+            padding: 20px;
+            border-bottom: 1px solid #e4e6ea;
+        }
+
+        .create-post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .create-post-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #e4e6ea;
+            border-radius: 25px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .create-post-input:hover {
+            background: #f0f2f5;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .post-action {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 16px;
+        }
+
+        .post-action:hover {
+            background: #f0f2f5;
+        }
+
+        .post-action.video {
+            color: #e41e3f;
+        }
+
+        .post-action.photo {
+            color: #45bd62;
+        }
+
+        .post-action.event {
+            color: #ff9500;
+        }
+
+        /* القصص */
+        .stories-section {
+            padding: 20px;
+            border-bottom: 1px solid #e4e6ea;
+        }
+
+        .stories-container {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .story {
+            flex: 0 0 120px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .story-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #1877f2;
+        }
+
+        .story-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-add {
+            background: linear-gradient(45deg, #ff0, #ff0080);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .story-name {
+            font-size: 12px;
+            color: #65676b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* المنشورات */
+        .posts-section {
+            padding: 20px;
+        }
+
+        .post {
+            border: 1px solid #e4e6ea;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background: #fff;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .post-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .post-time {
+            font-size: 13px;
+            color: #65676b;
+        }
+
+        .post-content {
+            padding: 0 15px;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            border-top: 1px solid #e4e6ea;
+        }
+
+        .post-action-btn {
+            background: none;
+            border: none;
+            color: #65676b;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+
+        .post-action-btn:hover {
+            background: #f0f2f5;
+        }
+
+        .post-action-btn.like {
+            color: #e41e3f;
+        }
+
+        /* الشريط الجانبي الأيمن */
+        .sidebar-right {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1c1e21;
+        }
+
+        .contacts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .contact:hover {
+            background: #f0f2f5;
+        }
+
+        .contact-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .contact-avatar.online::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background: #45bd62;
+            border: 2px solid #fff;
+            border-radius: 50%;
+        }
+
+        .contact-info h5 {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .contact-info span {
+            font-size: 12px;
+            color: #65676b;
+        }
+
+        /* نافذة المراسلة */
+        .messenger {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .messenger-header {
+            padding: 15px;
+            border-bottom: 1px solid #e4e6ea;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .messenger-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #65676b;
+        }
+
+        .messenger-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+
+        .message.sent {
+            background: #1877f2;
+            color: white;
+            margin-left: auto;
+        }
+
+        .message.received {
+            background: #f0f2f5;
+            color: #1c1e21;
+        }
+
+        .messenger-input-area {
+            padding: 15px;
+            border-top: 1px solid #e4e6ea;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .messenger-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e4e6ea;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .messenger-send {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1877f2;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* التصميم المتجاوب */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .sidebar-left,
+            .sidebar-right {
+                display: none;
+            }
+
+            .header-actions .header-icon:nth-child(n+4) {
+                display: none;
+            }
+
+            .messenger {
+                width: 100vw;
+                height: 100vh;
+                bottom: 0;
+                right: 0;
+                border-radius: 0;
+            }
+        }
+
+        /* تأثيرات بصرية */
+        .gradient-text {
+            background: linear-gradient(45deg, #1877f2, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">ف</div>
+                <div class="search-container">
+                    <input type="text" class="search-box" placeholder="البحث في فيسبوك...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="header-icon active"><i class="fas fa-home"></i></div>
+                <div class="header-icon"><i class="fas fa-users"></i></div>
+                <div class="header-icon"><i class="fas fa-bell"></i><span class="notification-badge">3</span></div>
+                <div class="header-icon" onclick="toggleMessenger()"><i class="fas fa-comments"></i><span class="notification-badge">5</span></div>
+                <div class="header-icon"><i class="fas fa-user-circle"></i></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- الحاوي الرئيسي -->
+    <div class="main-container">
+        <!-- الشريط الجانبي الأيسر -->
+        <aside class="sidebar-left">
+            <div class="menu-item active">
+                <img src="https://via.placeholder.com/30/1877f2/fff?text=A" alt="Avatar">
+                <span>أحمد محمد</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>الأصدقاء</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-clock"></i>
+                <span>أحدث الأنشطة</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-bookmark"></i>
+                <span>العناصر المحفوظة</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-calendar"></i>
+                <span>الأحداث</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-shopping-bag"></i>
+                <span>المتجر</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-star"></i>
+                <span>المفضلة</span>
+            </div>
+        </aside>
+
+        <!-- منطقة المنشورات الرئيسية -->
+        <main class="main-feed">
+            <!-- إنشاء منشور جديد -->
+            <div class="create-post fade-in">
+                <div class="create-post-header">
+                    <img src="https://via.placeholder.com/40/1877f2/fff?text=A" alt="Avatar" class="post-avatar">
+                    <input type="text" class="create-post-input" placeholder="ما الذي يدور في ذهنك، أحمد؟" onclick="showPostModal()">
+                </div>
+                <div class="post-actions">
+                    <button class="post-action video" onclick="createPost('video')">
+                        <i class="fas fa-video"></i>
+                        <span>فيديو مباشر</span>
+                    </button>
+                    <button class="post-action photo" onclick="createPost('photo')">
+                        <i class="fas fa-images"></i>
+                        <span>صورة</span>
+                    </button>
+                    <button class="post-action event" onclick="createPost('event')">
+                        <i class="fas fa-calendar-plus"></i>
+                        <span>حدث</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- القصص -->
+            <div class="stories-section fade-in">
+                <div class="stories-container">
+                    <div class="story" onclick="createStory()">
+                        <div class="story-avatar story-add">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div class="story-name">إنشاء قصة</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-avatar">
+                            <img src="https://via.placeholder.com/60/e91e63/fff?text=S" alt="Story">
+                        </div>
+                        <div class="story-name">سارة أحمد</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-avatar">
+                            <img src="https://via.placeholder.com/60/4caf50/fff?text=M" alt="Story">
+                        </div>
+                        <div class="story-name">محمد علي</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-avatar">
+                            <img src="https://via.placeholder.com/60/ff9800/fff?text=F" alt="Story">
+                        </div>
+                        <div class="story-name">فاطمة خالد</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المنشورات -->
+            <div class="posts-section">
+                <!-- منشور 1 -->
+                <div class="post fade-in">
+                    <div class="post-header">
+                        <img src="https://via.placeholder.com/40/2196f3/fff?text=M" alt="Avatar" class="post-avatar">
+                        <div class="post-info">
+                            <h4>محمد أحمد</h4>
+                            <span class="post-time">منذ ساعتين · <i class="fas fa-globe"></i></span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        مرحباً أصدقائي! اليوم كان يوماً رائعاً في العمل. تعلمت الكثير من الأشياء الجديدة وأنا متحمس جداً للمشاريع القادمة! 🚀
+                    </div>
+                    <img src="https://via.placeholder.com/600/42a5f5/fff?text=Work+Project" alt="Post Image" class="post-image">
+                    <div class="post-actions">
+                        <button class="post-action-btn" onclick="likePost(this)">
+                            <i class="far fa-thumbs-up"></i>
+                            <span>إعجاب</span>
+                        </button>
+                        <button class="post-action-btn" onclick="commentPost(this)">
+                            <i class="far fa-comment"></i>
+                            <span>تعليق</span>
+                        </button>
+                        <button class="post-action-btn" onclick="sharePost(this)">
+                            <i class="fas fa-share"></i>
+                            <span>مشاركة</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- منشور 2 -->
+                <div class="post fade-in">
+                    <div class="post-header">
+                        <img src="https://via.placeholder.com/40/e91e63/fff?text=S" alt="Avatar" class="post-avatar">
+                        <div class="post-info">
+                            <h4>سارة محمد</h4>
+                            <span class="post-time">منذ 4 ساعات · <i class="fas fa-users"></i></span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        استمتعت برحلة رائعة في الجبال اليوم! الهواء النقي والمناظر الخلابة جعلت اليوم لا يُنسى 📸⛰️
+                    </div>
+                    <img src="https://via.placeholder.com/600/81c784/fff?text=Mountain+View" alt="Post Image" class="post-image">
+                    <div class="post-actions">
+                        <button class="post-action-btn" onclick="likePost(this)">
+                            <i class="far fa-thumbs-up"></i>
+                            <span>إعجاب</span>
+                        </button>
+                        <button class="post-action-btn" onclick="commentPost(this)">
+                            <i class="far fa-comment"></i>
+                            <span>تعليق</span>
+                        </button>
+                        <button class="post-action-btn" onclick="sharePost(this)">
+                            <i class="fas fa-share"></i>
+                            <span>مشاركة</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- منشور 3 -->
+                <div class="post fade-in">
+                    <div class="post-header">
+                        <img src="https://via.placeholder.com/40/ff9800/fff?text=A" alt="Avatar" class="post-avatar">
+                        <div class="post-info">
+                            <h4>أحمد علي</h4>
+                            <span class="post-time">منذ 6 ساعات · <i class="fas fa-lock"></i></span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        هل جربتم تطبيق الطبخ الجديد؟ إنه رائع جداً ويحتوي على آلاف الوصفات الشهية! 🍳👨‍🍳
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-action-btn" onclick="likePost(this)">
+                            <i class="far fa-thumbs-up"></i>
+                            <span>إعجاب</span>
+                        </button>
+                        <button class="post-action-btn" onclick="commentPost(this)">
+                            <i class="far fa-comment"></i>
+                            <span>تعليق</span>
+                        </button>
+                        <button class="post-action-btn" onclick="sharePost(this)">
+                            <i class="fas fa-share"></i>
+                            <span>مشاركة</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- الشريط الجانبي الأيمن -->
+        <aside class="sidebar-right">
+            <div class="section-title">جهات الاتصال</div>
+            <div class="contacts-list">
+                <div class="contact">
+                    <div class="contact-avatar online">
+                        <img src="https://via.placeholder.com/35/4caf50/fff?text=M" alt="Contact">
+                    </div>
+                    <div class="contact-info">
+                        <h5>محمد خالد</h5>
+                        <span>نشط الآن</span>
+                    </div>
+                </div>
+                <div class="contact">
+                    <div class="contact-avatar online">
+                        <img src="https://via.placeholder.com/35/e91e63/fff?text=F" alt="Contact">
+                    </div>
+                    <div class="contact-info">
+                        <h5>فاطمة أحمد</h5>
+                        <span>نشط الآن</span>
+                    </div>
+                </div>
+                <div class="contact">
+                    <div class="contact-avatar">
+                        <img src="https://via.placeholder.com/35/ff9800/fff?text=A" alt="Contact">
+                    </div>
+                    <div class="contact-info">
+                        <h5>أحمد محمد</h5>
+                        <span>منذ دقيقة واحدة</span>
+                    </div>
+                </div>
+                <div class="contact">
+                    <div class="contact-avatar">
+                        <img src="https://via.placeholder.com/35/9c27b0/fff?text=L" alt="Contact">
+                    </div>
+                    <div class="contact-info">
+                        <h5>لينا علي</h5>
+                        <span>منذ 5 دقائق</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title" style="margin-top: 30px;">مجموعات مقترحة</div>
+            <div class="contacts-list">
+                <div class="contact">
+                    <div class="contact-avatar">
+                        <img src="https://via.placeholder.com/35/607d8b/fff?text=G" alt="Group">
+                    </div>
+                    <div class="contact-info">
+                        <h5>مطوري الويب</h5>
+                        <span>1.2k عضو</span>
+                    </div>
+                </div>
+                <div class="contact">
+                    <div class="contact-avatar">
+                        <img src="https://via.placeholder.com/35/795548/fff?text=P" alt="Group">
+                    </div>
+                    <div class="contact-info">
+                        <h5>مصورون هواة</h5>
+                        <span>856 عضو</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- نافذة المراسلة -->
+    <div class="messenger" id="messenger">
+        <div class="messenger-header">
+            <span>المحادثات</span>
+            <button class="messenger-close" onclick="toggleMessenger()">×</button>
+        </div>
+        <div class="messenger-body">
+            <div class="message received">
+                مرحباً! كيف حالك اليوم؟
+            </div>
+            <div class="message sent">
+                بخير الحمد لله، شكراً لسؤالك! وأنت كيف حالك؟
+            </div>
+            <div class="message received">
+                أنا بخير أيضاً، هل عندك خطط للإجازة القادمة؟
+            </div>
+        </div>
+        <div class="messenger-input-area">
+            <input type="text" class="messenger-input" placeholder="اكتب رسالة...">
+            <button class="messenger-send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // وظائف التفاعل
+        function showPostModal() {
+            alert('سيتم فتح نافذة إنشاء المنشور قريباً! 🚀');
+        }
+
+        function createPost(type) {
+            const messages = {
+                video: 'سيتم فتح الكاميرا لبدء البث المباشر! 📹',
+                photo: 'سيتم فتح معرض الصور لاختيار صورة! 📸',
+                event: 'سيتم إنشاء حدث جديد! 🎉'
+            };
+            alert(messages[type]);
+        }
+
+        function createStory() {
+            alert('سيتم فتح الكاميرا لإنشاء قصة جديدة! 📷');
+        }
+
+        function likePost(button) {
+            const icon = button.querySelector('i');
+            const text = button.querySelector('span');
+
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                button.classList.add('like');
+                text.textContent = 'أعجبني';
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                button.classList.remove('like');
+                text.textContent = 'إعجاب';
+            }
+        }
+
+        function commentPost(button) {
+            const comment = prompt('اكتب تعليقك:');
+            if (comment) {
+                alert('تم إضافة تعليقك: ' + comment + ' 💬');
+            }
+        }
+
+        function sharePost(button) {
+            alert('سيتم فتح خيارات المشاركة! 🔗');
+        }
+
+        function toggleMessenger() {
+            const messenger = document.getElementById('messenger');
+            messenger.style.display = messenger.style.display === 'none' || messenger.style.display === '' ? 'flex' : 'none';
+        }
+
+        // تأثيرات بصرية إضافية
+        document.addEventListener('DOMContentLoaded', function() {
+            // إضافة تأثير النبض للقصص
+            const stories = document.querySelectorAll('.story-avatar');
+            stories.forEach((story, index) => {
+                setTimeout(() => {
+                    story.classList.add('pulse');
+                }, index * 200);
+            });
+
+            // إضافة تأثير التلاشي للمنشورات
+            const posts = document.querySelectorAll('.post');
+            posts.forEach((post, index) => {
+                setTimeout(() => {
+                    post.classList.add('fade-in');
+                }, index * 300);
+            });
+
+            // محاكاة الإشعارات الحية
+            setInterval(() => {
+                const notificationBadge = document.querySelector('.notification-badge');
+                if (notificationBadge) {
+                    const currentCount = parseInt(notificationBadge.textContent);
+                    if (Math.random() > 0.7) {
+                        notificationBadge.textContent = currentCount + 1;
+                        notificationBadge.classList.add('pulse');
+                        setTimeout(() => {
+                            notificationBadge.classList.remove('pulse');
+                        }, 1000);
+                    }
+                }
+            }, 10000);
+
+            // تأثير البحث
+            const searchBox = document.querySelector('.search-box');
+            searchBox.addEventListener('input', function() {
+                if (this.value.length > 0) {
+                    this.style.transform = 'scale(1.02)';
+                } else {
+                    this.style.transform = 'scale(1)';
+                }
+            });
+        });
+
+        // إضافة المزيد من التفاعلية
+        document.querySelectorAll('.menu-item, .header-icon').forEach(item => {
+            item.addEventListener('click', function() {
+                // إزالة النشاط من العناصر الأخرى
+                document.querySelectorAll('.menu-item, .header-icon').forEach(i => {
+                    i.classList.remove('active');
+                });
+                // إضافة النشاط للعنصر المحدد
+                this.classList.add('active');
+            });
+        });
+
+        // محاكاة الكتابة في المراسلة
+        let messageIndex = 0;
+        const messages = [
+            "كيف كان يومك؟ 😊",
+            "شفت الخبر الجديد؟",
+            "متى سنلتقي مرة أخرى؟",
+            "المشروع يسير بشكل رائع! 👍"
+        ];
+
+        document.querySelector('.messenger-send').addEventListener('click', function() {
+            const input = document.querySelector('.messenger-input');
+            const messageText = input.value.trim();
+
+            if (messageText) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message sent';
+                messageDiv.textContent = messageText;
+                document.querySelector('.messenger-body').appendChild(messageDiv);
+                input.value = '';
+
+                // تمرير تلقائي لأسفل
+                document.querySelector('.messenger-body').scrollTop = document.querySelector('.messenger-body').scrollHeight;
+
+                // رد تلقائي بعد ثانيتين
+                setTimeout(() => {
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'message received';
+                    replyDiv.textContent = messages[messageIndex % messages.length];
+                    document.querySelector('.messenger-body').appendChild(replyDiv);
+                    document.querySelector('.messenger-body').scrollTop = document.querySelector('.messenger-body').scrollHeight;
+                    messageIndex++;
+                }, 2000);
+            }
+        });
+
+        // إرسال بالضغط على Enter
+        document.querySelector('.messenger-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.messenger-send').click();
+            }
+        });
+    </script>
+</body>
+</html>
