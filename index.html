@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فيسبوك - تواصل مع الأصدقاء والعالم من حولك</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo Section -->
+            <div class="nav-left">
+                <div class="logo">
+                    <i class="fab fa-facebook"></i>
+                    <span>فيسبوك</span>
+                </div>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="البحث في فيسبوك">
+                </div>
+            </div>
+
+            <!-- Navigation Icons -->
+            <div class="nav-center">
+                <a href="#" class="nav-icon active">
+                    <i class="fas fa-home"></i>
+                </a>
+                <a href="#" class="nav-icon">
+                    <i class="fas fa-users"></i>
+                </a>
+                <a href="#" class="nav-icon">
+                    <i class="fas fa-tv"></i>
+                </a>
+                <a href="#" class="nav-icon">
+                    <i class="fas fa-store"></i>
+                </a>
+                <a href="#" class="nav-icon">
+                    <i class="fas fa-gamepad"></i>
+                </a>
+            </div>
+
+            <!-- User Menu -->
+            <div class="nav-right">
+                <div class="nav-icon">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="nav-icon">
+                    <i class="fab fa-facebook-messenger"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="nav-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">7</span>
+                </div>
+                <div class="user-profile">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Profile">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Profile">
+                            <div>
+                                <h4>أحمد محمد</h4>
+                                <p>عرض الملف الشخصي</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            <span>الإعدادات والخصوصية</span>
+                        </div>
+                        <div class="dropdown-item">
+                            <i class="fas fa-question-circle"></i>
+                            <span>المساعدة والدعم</span>
+                        </div>
+                        <div class="dropdown-item">
+                            <i class="fas fa-moon"></i>
+                            <span>العرض والوصول</span>
+                        </div>
+                        <div class="dropdown-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>تسجيل الخروج</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Left Sidebar -->
+        <aside class="left-sidebar">
+            <div class="sidebar-menu">
+                <a href="#" class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Profile">
+                    <span>أحمد محمد</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-users" style="color: #1877f2;"></i>
+                    <span>الأصدقاء</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-clock" style="color: #42b883;"></i>
+                    <span>الذكريات</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-bookmark" style="color: #9b59b6;"></i>
+                    <span>المحفوظات</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-users" style="color: #e74c3c;"></i>
+                    <span>المجموعات</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-tv" style="color: #f39c12;"></i>
+                    <span>الفيديو</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-store" style="color: #3498db;"></i>
+                    <span>المتجر</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-calendar" style="color: #e67e22;"></i>
+                    <span>الأحداث</span>
+                </a>
+                <div class="menu-item show-more" onclick="toggleMoreMenu()">
+                    <i class="fas fa-chevron-down"></i>
+                    <span>عرض المزيد</span>
+                </div>
+            </div>
+
+            <div class="shortcuts">
+                <h3>اختصاراتك</h3>
+                <a href="#" class="shortcut-item">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=40&h=40&fit=crop" alt="Group">
+                    <span>مجموعة المطورين</span>
+                </a>
+                <a href="#" class="shortcut-item">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=40&h=40&fit=crop" alt="Page">
+                    <span>صفحة التقنية</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Center Content -->
+        <section class="center-content">
+            <!-- Stories Section -->
+            <div class="stories-container">
+                <div class="story create-story">
+                    <div class="story-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=200&fit=crop&crop=face" alt="Your Story">
+                        <div class="add-story-btn">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <span>إنشاء قصة</span>
+                </div>
+                
+                <div class="story">
+                    <div class="story-image">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=200&fit=crop&crop=face" alt="Story">
+                        <img class="story-avatar" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face" alt="User">
+                    </div>
+                    <span>سارة أحمد</span>
+                </div>
+
+                <div class="story">
+                    <div class="story-image">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=200&fit=crop&crop=face" alt="Story">
+                        <img class="story-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="User">
+                    </div>
+                    <span>محمد علي</span>
+                </div>
+
+                <div class="story">
+                    <div class="story-image">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=200&fit=crop&crop=face" alt="Story">
+                        <img class="story-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" alt="User">
+                    </div>
+                    <span>فاطمة خالد</span>
+                </div>
+
+                <div class="story">
+                    <div class="story-image">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=200&fit=crop&crop=face" alt="Story">
+                        <img class="story-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face" alt="User">
+                    </div>
+                    <span>عمر حسن</span>
+                </div>
+            </div>
+
+            <!-- Create Post -->
+            <div class="create-post">
+                <div class="post-input">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Profile">
+                    <input type="text" placeholder="بماذا تفكر يا أحمد؟" onclick="openCreatePostModal()">
+                </div>
+                <div class="post-options">
+                    <div class="post-option">
+                        <i class="fas fa-video" style="color: #f02849;"></i>
+                        <span>فيديو مباشر</span>
+                    </div>
+                    <div class="post-option">
+                        <i class="fas fa-images" style="color: #45bd62;"></i>
+                        <span>صورة/فيديو</span>
+                    </div>
+                    <div class="post-option">
+                        <i class="fas fa-smile" style="color: #f7b928;"></i>
+                        <span>شعور/نشاط</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posts Feed -->
+            <div class="posts-feed">
+                <!-- Post 1 -->
+                <article class="post">
+                    <div class="post-header">
+                        <div class="post-user-info">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face" alt="User">
+                            <div class="user-details">
+                                <h4>سارة أحمد</h4>
+                                <div class="post-meta">
+                                    <span>منذ 3 ساعات</span>
+                                    <i class="fas fa-globe-americas"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-options-btn">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="post-content">
+                        <p>يوم رائع في الحديقة مع الأصدقاء! 🌸✨ الطبيعة تعطي دائماً طاقة إيجابية مذهلة</p>
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=400&fit=crop" alt="Post Image">
+                        </div>
+                    </div>
+
+                    <div class="post-stats">
+                        <div class="reactions-count">
+                            <div class="reaction-icons">
+                                <span class="reaction like">👍</span>
+                                <span class="reaction love">❤️</span>
+                                <span class="reaction wow">😮</span>
+                            </div>
+                            <span>أعجب بها أحمد و 24 آخرين</span>
+                        </div>
+                        <div class="comments-shares">
+                            <span>12 تعليق</span>
+                            <span>5 مشاركات</span>
+                        </div>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="action-btn like-btn">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span>إعجاب</span>
+                        </button>
+                        <button class="action-btn comment-btn">
+                            <i class="fas fa-comment"></i>
+                            <span>تعليق</span>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <i class="fas fa-share"></i>
+                            <span>مشاركة</span>
+                        </button>
+                    </div>
+
+                    <div class="comments-section">
+                        <div class="comment">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" alt="User">
+                            <div class="comment-content">
+                                <div class="comment-bubble">
+                                    <strong>محمد علي</strong>
+                                    <p>صور جميلة جداً! يبدو أنكم قضيتم وقتاً رائعاً</p>
+                                </div>
+                                <div class="comment-actions">
+                                    <span>إعجاب</span>
+                                    <span>رد</span>
+                                    <span>منذ ساعة</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="add-comment">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" alt="Your Profile">
+                            <input type="text" placeholder="اكتب تعليقاً...">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Post 2 -->
+                <article class="post">
+                    <div class="post-header">
+                        <div class="post-user-info">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="User">
+                            <div class="user-details">
+                                <h4>محمد علي</h4>
+                                <div class="post-meta">
+                                    <span>منذ 5 ساعات</span>
+                                    <i class="fas fa-globe-americas"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-options-btn">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="post-content">
+                        <p>تعلمت اليوم شيئاً جديداً في البرمجة! 💻 التطوير المستمر هو مفتاح النجاح في هذا المجال</p>
+                    </div>
+
+                    <div class="post-stats">
+                        <div class="reactions-count">
+                            <div class="reaction-icons">
+                                <span class="reaction like">👍</span>
+                                <span class="reaction love">❤️</span>
+                            </div>
+                            <span>أعجب بها 18 شخصاً</span>
+                        </div>
+                        <div class="comments-shares">
+                            <span>8 تعليقات</span>
+                            <span>2 مشاركة</span>
+                        </div>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="action-btn like-btn">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span>إعجاب</span>
+                        </button>
+                        <button class="action-btn comment-btn">
+                            <i class="fas fa-comment"></i>
+                            <span>تعليق</span>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <i class="fas fa-share"></i>
+                            <span>مشاركة</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Post 3 -->
+                <article class="post">
+                    <div class="post-header">
+                        <div class="post-user-info">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" alt="User">
+                            <div class="user-details">
+                                <h4>فاطمة خالد</h4>
+                                <div class="post-meta">
+                                    <span>منذ 8 ساعات</span>
+                                    <i class="fas fa-globe-americas"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-options-btn">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="post-content">
+                        <p>وصفة كعكة الشوكولاتة الجديدة كانت نجاحاً باهراً! 🍰 شكراً لكل من جرب الوصفة وأعطى رأيه</p>
+                        <div class="post-images-grid">
+                            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=200&fit=crop" alt="Cake 1">
+                            <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=300&h=200&fit=crop" alt="Cake 2">
+                        </div>
+                    </div>
+
+                    <div class="post-stats">
+                        <div class="reactions-count">
+                            <div class="reaction-icons">
+                                <span class="reaction like">👍</span>
+                                <span class="reaction love">❤️</span>
+                                <span class="reaction yummy">😋</span>
+                            </div>
+                            <span>أعجب بها 45 شخصاً</span>
+                        </div>
+                        <div class="comments-shares">
+                            <span>23 تعليق</span>
+                            <span>12 مشاركة</span>
+                        </div>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="action-btn like-btn">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span>إعجاب</span>
+                        </button>
+                        <button class="action-btn comment-btn">
+                            <i class="fas fa-comment"></i>
+                            <span>تعليق</span>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <i class="fas fa-share"></i>
+                            <span>مشاركة</span>
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <!-- Sponsored -->
+            <div class="sidebar-section">
+                <h3>مُموَّل</h3>
+                <div class="sponsored-item">
+                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100&h=100&fit=crop" alt="Ad">
+                    <div class="sponsored-content">
+                        <h4>تعلم البرمجة مجاناً</h4>
+                        <p>ابدأ رحلتك في عالم التقنية</p>
+                        <span>codecamp.com</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contacts -->
+            <div class="sidebar-section">
+                <div class="section-header">
+                    <h3>جهات الاتصال</h3>
+                    <div class="section-actions">
+                        <i class="fas fa-video"></i>
+                        <i class="fas fa-search"></i>
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                
+                <div class="contacts-list">
+                    <div class="contact-item">
+                        <div class="contact-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=32&h=32&fit=crop&crop=face" alt="Contact">
+                            <span class="online-status"></span>
+                        </div>
+                        <span>سارة أحمد</span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-avatar">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" alt="Contact">
+                            <span class="online-status"></span>
+                        </div>
+                        <span>محمد علي</span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-avatar">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face" alt="Contact">
+                            <span class="online-status away"></span>
+                        </div>
+                        <span>فاطمة خالد</span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-avatar">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=32&h=32&fit=crop&crop=face" alt="Contact">
+                            <span class="online-status"></span>
+                        </div>
+                        <span>عمر حسن</span>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-avatar">
+                            <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=32&h=32&fit=crop&crop=face" alt="Contact">
+                        </div>
+                        <span>نور الدين</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Group Conversations -->
+            <div class="sidebar-section">
+                <h3>محادثات جماعية</h3>
+                <div class="group-conversation">
+                    <div class="group-avatar">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <span>مجموعة المطورين</span>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Create Post Modal -->
+    <div id="createPostModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إنشاء منشور</h3>
+                <button class="close-btn" onclick="closeCreatePostModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="post-creator-info">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Profile">
+                    <div>
+                        <h4>أحمد محمد</h4>
+                        <select class="privacy-select">
+                            <option value="public">عام</option>
+                            <option value="friends">الأصدقاء</option>
+                            <option value="private">خاص</option>
+                        </select>
+                    </div>
+                </div>
+                <textarea placeholder="بماذا تفكر يا أحمد؟" rows="4"></textarea>
+                <div class="post-options-grid">
+                    <div class="post-option-item">
+                        <i class="fas fa-images" style="color: #45bd62;"></i>
+                        <span>صورة/فيديو</span>
+                    </div>
+                    <div class="post-option-item">
+                        <i class="fas fa-user-tag" style="color: #1877f2;"></i>
+                        <span>وسم أشخاص</span>
+                    </div>
+                    <div class="post-option-item">
+                        <i class="fas fa-smile" style="color: #f7b928;"></i>
+                        <span>شعور/نشاط</span>
+                    </div>
+                    <div class="post-option-item">
+                        <i class="fas fa-map-marker-alt" style="color: #e74c3c;"></i>
+                        <span>تسجيل وصول</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="post-btn">نشر</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
