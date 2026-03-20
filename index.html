@@ -1,0 +1,658 @@
+cat > qtxsy.html << 'EOF'
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>QTXSY - منصة التداول الذكية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tajawal', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        /* شريط التنقل */
+        .navbar {
+            background: rgba(15, 25, 45, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: 0.3s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff;
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        /* الحاوية الرئيسية */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* بطاقات المعلومات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .stat-title {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            margin-top: 10px;
+            color: #4caf50;
+        }
+
+        /* لوحة التحكم */
+        .panel {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .panel-title {
+            font-size: 20px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* أزرار */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn-outline:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        /* WebView */
+        .webview-container {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        /* قسم الدعم */
+        .support-card {
+            background: linear-gradient(135deg, #1e2a3a, #0f172a);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .telegram-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #0088cc;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* حالة الاتصال */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* رسائل التنبيه */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* تبويبات */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .tab.active {
+            background: rgba(102, 126, 234, 0.3);
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            iframe {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">🔱</div>
+            <div class="logo-text">QTXSY</div>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active" data-tab="dashboard">الرئيسية</a>
+            <a href="#" data-tab="trade">التداول</a>
+            <a href="#" data-tab="webview">منصة Quotex</a>
+            <a href="#" data-tab="support">الدعم</a>
+        </div>
+        <div class="status-badge">
+            <span class="status-dot"></span>
+            <span id="connectionStatus">متصل</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- تبويب الرئيسية -->
+        <div id="dashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">الرصيد التجريبي</div>
+                    <div class="stat-value" id="demoBalance">$10,000.00</div>
+                    <div class="stat-change">🔄 آخر تحديث: الآن</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">الرصيد الحقيقي</div>
+                    <div class="stat-value" id="liveBalance">$0.00</div>
+                    <div class="stat-change">📊 غير متصل</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">حالة الجلسة</div>
+                    <div class="stat-value" id="sessionStatus">غير مسجل</div>
+                    <div class="stat-change" id="sessionInfo">-</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">
+                    📊 ملخص الحساب
+                </div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="refreshBalance()">تحديث الرصيد</button>
+                    <button class="btn btn-outline" onclick="clearSession()">تسجيل خروج</button>
+                </div>
+                <div id="balanceHistory" style="margin-top: 20px;">
+                    <p style="color: #888;">اضغط على "تحديث الرصيد" لجلب البيانات</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- تبويب التداول -->
+        <div id="trade" class="tab-content">
+            <div class="panel">
+                <div class="panel-title">
+                    📈 لوحة التداول
+                </div>
+                <div style="display: grid; gap: 20px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 10px;">المبلغ ($)</label>
+                        <input type="number" id="tradeAmount" value="100" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 10px;">الاتجاه</label>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-primary" onclick="executeTrade('up')" style="flex: 1; background: #4caf50;">▲ صاعد</button>
+                            <button class="btn btn-primary" onclick="executeTrade('down')" style="flex: 1; background: #f44336;">▼ هابط</button>
+                        </div>
+                    </div>
+                    <div id="tradeResult" style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 12px;">
+                        <p style="color: #888;">انقر على اتجاه التداول</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تبويب WebView (منصة Quotex) -->
+        <div id="webview" class="tab-content">
+            <div class="panel">
+                <div class="panel-title">
+                    🌐 منصة Quotex - تسجيل الدخول
+                </div>
+                <div class="webview-container">
+                    <iframe id="quotexFrame" src="https://qxbroker.com/ar/sign-in"></iframe>
+                </div>
+                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary" onclick="extractSession()">استخراج الجلسة</button>
+                    <button class="btn btn-outline" onclick="refreshFrame()">تحديث الصفحة</button>
+                    <button class="btn btn-outline" onclick="openInNewTab()">فتح في تبويب جديد</button>
+                </div>
+                <p style="color: #888; font-size: 12px; margin-top: 10px;">
+                    ℹ️ سجل الدخول أولاً، ثم اضغط "استخراج الجلسة" لتفعيل المتابعة
+                </p>
+            </div>
+        </div>
+
+        <!-- تبويب الدعم -->
+        <div id="support" class="tab-content">
+            <div class="support-card">
+                <div style="font-size: 48px; margin-bottom: 15px;">💬</div>
+                <h3>الدعم الفني</h3>
+                <p>انضم إلى قناة التليجرام للحصول على الدعم والتحديثات</p>
+                <a href="https://t.me/qtxsy_support" target="_blank" class="telegram-btn">
+                    📱 انضم إلى قناة التليجرام
+                </a>
+                <div style="margin-top: 30px;">
+                    <button class="btn btn-outline" onclick="shareApp()">📤 مشاركة التطبيق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ البيانات والتخزين ============
+        let sessionData = {
+            ssid: null,
+            demoBalance: 10000,
+            liveBalance: 0,
+            lastUpdate: null
+        };
+
+        // تحميل البيانات المحفوظة
+        function loadSavedData() {
+            const saved = localStorage.getItem('qtxsy_session');
+            if (saved) {
+                try {
+                    sessionData = JSON.parse(saved);
+                    updateUI();
+                } catch(e) {}
+            }
+        }
+
+        // حفظ البيانات
+        function saveData() {
+            localStorage.setItem('qtxsy_session', JSON.stringify(sessionData));
+        }
+
+        // تحديث الواجهة
+        function updateUI() {
+            document.getElementById('demoBalance').innerHTML = `$${sessionData.demoBalance.toLocaleString()}`;
+            document.getElementById('liveBalance').innerHTML = `$${sessionData.liveBalance.toLocaleString()}`;
+            
+            if (sessionData.ssid) {
+                document.getElementById('sessionStatus').innerHTML = '✅ مسجل';
+                document.getElementById('sessionInfo').innerHTML = `SSID: ${sessionData.ssid.substring(0, 20)}...`;
+                document.getElementById('connectionStatus').innerHTML = 'متصل ✓';
+            } else {
+                document.getElementById('sessionStatus').innerHTML = '⚠️ غير مسجل';
+                document.getElementById('sessionInfo').innerHTML = 'سجل دخول أولاً';
+            }
+        }
+
+        // ============ الوظائف الرئيسية ============
+
+        // استخراج الجلسة من iframe
+        function extractSession() {
+            showToast('جاري استخراج الجلسة...', 'info');
+            
+            // محاكاة استخراج SSID (في الواقع الحقيقي يحتاج إلى API وسيط)
+            // هذه محاكاة لتجربة الوظائف
+            setTimeout(() => {
+                const mockSSID = 'qtx_' + Math.random().toString(36).substring(2, 15);
+                sessionData.ssid = mockSSID;
+                sessionData.lastUpdate = new Date().toISOString();
+                saveData();
+                updateUI();
+                showToast('تم استخراج الجلسة بنجاح!', 'success');
+                refreshBalance();
+            }, 1500);
+        }
+
+        // تحديث الرصيد
+        function refreshBalance() {
+            if (!sessionData.ssid) {
+                showToast('⚠️ يرجى تسجيل الدخول أولاً', 'warning');
+                return;
+            }
+            
+            showToast('جاري تحديث الرصيد...', 'info');
+            
+            // محاكاة جلب الرصيد من API
+            setTimeout(() => {
+                // محاكاة تغير الرصيد
+                const newDemoBalance = sessionData.demoBalance + (Math.random() - 0.5) * 500;
+                sessionData.demoBalance = Math.max(0, newDemoBalance);
+                
+                if (sessionData.liveBalance > 0) {
+                    const newLiveBalance = sessionData.liveBalance + (Math.random() - 0.5) * 100;
+                    sessionData.liveBalance = Math.max(0, newLiveBalance);
+                }
+                
+                saveData();
+                updateUI();
+                
+                // عرض تاريخ التحديث
+                const historyDiv = document.getElementById('balanceHistory');
+                historyDiv.innerHTML = `
+                    <div style="background: rgba(102,126,234,0.2); padding: 10px; border-radius: 12px;">
+                        <p>✅ آخر تحديث: ${new Date().toLocaleTimeString()}</p>
+                        <p>💰 الرصيد التجريبي: $${sessionData.demoBalance.toLocaleString()}</p>
+                        ${sessionData.liveBalance > 0 ? `<p>💵 الرصيد الحقيقي: $${sessionData.liveBalance.toLocaleString()}</p>` : ''}
+                    </div>
+                `;
+                
+                showToast('تم تحديث الرصيد', 'success');
+            }, 1000);
+        }
+
+        // تنفيذ صفقة
+        function executeTrade(direction) {
+            if (!sessionData.ssid) {
+                showToast('⚠️ يرجى تسجيل الدخول أولاً', 'warning');
+                return;
+            }
+            
+            const amount = parseFloat(document.getElementById('tradeAmount').value);
+            if (isNaN(amount) || amount <= 0) {
+                showToast('⚠️ أدخل مبلغ صحيح', 'warning');
+                return;
+            }
+            
+            showToast(`جاري تنفيذ صفقة ${direction === 'up' ? 'صاعدة' : 'هابطة'}...`, 'info');
+            
+            // محاكاة تنفيذ الصفقة
+            setTimeout(() => {
+                const win = Math.random() > 0.5;
+                const profit = win ? amount * 0.85 : -amount;
+                
+                if (win) {
+                    sessionData.demoBalance += profit;
+                    showToast(`✅ ربح! +$${profit.toFixed(2)}`, 'success');
+                } else {
+                    sessionData.demoBalance += profit;
+                    showToast(`❌ خسارة! -$${Math.abs(profit).toFixed(2)}`, 'error');
+                }
+                
+                saveData();
+                updateUI();
+                
+                const resultDiv = document.getElementById('tradeResult');
+                resultDiv.innerHTML = `
+                    <p style="color: ${win ? '#4caf50' : '#f44336'}; font-weight: bold;">
+                        ${win ? '✓ ربح!' : '✗ خسارة!'}
+                    </p>
+                    <p>المبلغ: $${amount}</p>
+                    <p>النتيجة: ${win ? `+$${profit.toFixed(2)}` : `-$${Math.abs(profit).toFixed(2)}`}</p>
+                    <p>الرصيد الجديد: $${sessionData.demoBalance.toLocaleString()}</p>
+                `;
+                
+                refreshBalance();
+            }, 1500);
+        }
+
+        // تسجيل الخروج
+        function clearSession() {
+            sessionData = {
+                ssid: null,
+                demoBalance: 10000,
+                liveBalance: 0,
+                lastUpdate: null
+            };
+            saveData();
+            updateUI();
+            document.getElementById('balanceHistory').innerHTML = '<p style="color: #888;">اضغط على "تحديث الرصيد" لجلب البيانات</p>';
+            document.getElementById('tradeResult').innerHTML = '<p style="color: #888;">انقر على اتجاه التداول</p>';
+            showToast('تم تسجيل الخروج', 'info');
+        }
+
+        // تحديث iframe
+        function refreshFrame() {
+            const iframe = document.getElementById('quotexFrame');
+            iframe.src = iframe.src;
+            showToast('جاري تحديث الصفحة...', 'info');
+        }
+
+        // فتح في تبويب جديد
+        function openInNewTab() {
+            window.open('https://qxbroker.com/ar/sign-in', '_blank');
+            showToast('تم فتح المنصة في تبويب جديد', 'info');
+        }
+
+        // مشاركة التطبيق
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'QTXSY - منصة التداول',
+                    text: 'منصة متابعة وتحليل التداول على Quotex',
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                showToast('تم نسخ الرابط!', 'success');
+            }
+        }
+
+        // رسائل التنبيه
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.background = type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#333';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // ============ التبويبات ============
+        function initTabs() {
+            const tabs = document.querySelectorAll('.nav-links a');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // تحديث التبويبات النشطة
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        }
+
+        // ============ تهيئة الصفحة ============
+        loadSavedData();
+        initTabs();
+        updateUI();
+        
+        // تحديث تلقائي كل 30 ثانية إذا كان مسجل
+        setInterval(() => {
+            if (sessionData.ssid) {
+                refreshBalance();
+            }
+        }, 30000);
+        
+        console.log('🔱 QTXSY - تم تحميل الموقع بنجاح');
+        console.log('📌 الروابط المتاحة:');
+        console.log('   - تسجيل الدخول: https://qxbroker.com/ar/sign-in');
+        console.log('   - التداول: https://qxbroker.com/ar/trade');
+        console.log('   - التداول التجريبي: https://qxbroker.com/ar/demo-trade');
+        console.log('   - API: https://qxbroker.com/api/v1/cabinets/digest');
+        console.log('   - الدعم: https://t.me/qtxsy_support');
+    </script>
+</body>
+</html>
+EOF
+
+echo "✅ تم إنشاء الموقع بنجاح!"
+echo "📁 الموقع: qtxsy.html"
+echo "🌐 لفتحه في المتصفح:"
+echo "   - على Termux: termux-open qtxsy.html"
+echo "   - أو افتح الملف مباشرة في أي متصفح"
