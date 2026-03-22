@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فيسبوك - تواصل مع الأصدقاء والعالم</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: #1877f2;
+            color: white;
+            padding: 8px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 40px 8px 12px;
+            border: none;
+            border-radius: 20px;
+            background: white;
+            font-size: 14px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #65676b;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .nav-icon:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .profile-pic {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #42b883;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 60px;
+            gap: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: #1c1e21;
+            transition: background 0.3s;
+        }
+
+        .sidebar-item:hover {
+            background: #f0f2f5;
+        }
+
+        .sidebar-item i {
+            margin-left: 12px;
+            font-size: 20px;
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            max-width: 680px;
+        }
+
+        /* Create Post */
+        .create-post {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .create-post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .create-post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #42b883;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+
+        .create-post-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: #f0f2f5;
+            border-radius: 20px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .create-post-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e4e6ea;
+        }
+
+        .action-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            color: #65676b;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #f0f2f5;
+        }
+
+        .action-btn i {
+            margin-left: 8px;
+        }
+
+        /* Posts */
+        .post {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #42b883;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+
+        .post-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .post-info span {
+            font-size: 13px;
+            color: #65676b;
+        }
+
+        .post-options {
+            margin-right: auto;
+            color: #65676b;
+            cursor: pointer;
+        }
+
+        .post-content {
+            padding: 0 16px 16px;
+        }
+
+        .post-text {
+            font-size: 15px;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .post-actions {
+            display: flex;
+            padding: 8px 16px;
+            border-top: 1px solid #e4e6ea;
+        }
+
+        .post-action {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border: none;
+            background: none;
+            color: #65676b;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .post-action:hover {
+            background: #f0f2f5;
+        }
+
+        .post-action.liked {
+            color: #1877f2;
+        }
+
+        .post-action i {
+            margin-left: 8px;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 300px;
+        }
+
+        .sponsored {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sponsored h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: #65676b;
+        }
+
+        .sponsored-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            text-decoration: none;
+            color: #1c1e21;
+        }
+
+        .sponsored-item img {
+            width: 100px;
+            height: 60px;
+            border-radius: 8px;
+            margin-left: 12px;
+            object-fit: cover;
+        }
+
+        .sponsored-item h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .sponsored-item p {
+            font-size: 12px;
+            color: #65676b;
+        }
+
+        /* Contacts */
+        .contacts {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .contacts h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: #65676b;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            text-decoration: none;
+            color: #1c1e21;
+        }
+
+        .contact-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #42b883;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            margin-left: 12px;
+        }
+
+        .contact-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            background: #42b883;
+            border-radius: 50%;
+            margin-right: auto;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #65676b;
+        }
+
+        .modal-body textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #1877f2;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e4e6ea;
+            color: #1c1e21;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar, .right-sidebar {
+                width: 100%;
+                position: static;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .search-bar {
+                margin: 0;
+                max-width: 100%;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .post {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .create-post {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">فيسبوك</a>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="البحث في فيسبوك">
+            </div>
+            <div class="nav-icons">
+                <a href="#" class="nav-icon">
+                    <i class="fas fa-home"></i>
+                </a>
+                <a href="#" class="nav-icon">
+                    <i class="fas fa-users"></i>
+                </a>
+                <a href="#" class="nav-icon">
+                    <i class="fas fa-play-circle"></i>
+                </a>
+                <a href="#" class="nav-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                </a>
+                <a href="#" class="nav-icon">
+                    <i class="fas fa-gamepad"></i>
+                </a>
+                <div class="profile-pic">أ</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-user"></i>
+                <span>أحمد محمد</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-users"></i>
+                <span>الأصدقاء</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-bookmark"></i>
+                <span>المحفوظات</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-calendar"></i>
+                <span>الأحداث</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-flag"></i>
+                <span>الصفحات</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-shopping-bag"></i>
+                <span>المتجر</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-gamepad"></i>
+                <span>الألعاب</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-ellipsis-h"></i>
+                <span>المزيد</span>
+            </a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Create Post -->
+            <div class="create-post">
+                <div class="create-post-header">
+                    <div class="create-post-avatar">أ</div>
+                    <input type="text" class="create-post-input" placeholder="ما الذي يدور في ذهنك، أحمد؟" onclick="openCreatePostModal()">
+                </div>
+                <div class="create-post-actions">
+                    <button class="action-btn" onclick="openCreatePostModal()">
+                        <i class="fas fa-video"></i>
+                        <span>فيديو مباشر</span>
+                    </button>
+                    <button class="action-btn" onclick="openCreatePostModal()">
+                        <i class="fas fa-image"></i>
+                        <span>صورة/فيديو</span>
+                    </button>
+                    <button class="action-btn" onclick="openCreatePostModal()">
+                        <i class="fas fa-smile"></i>
+                        <span>نشاط</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Posts -->
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">س</div>
+                    <div class="post-info">
+                        <h4>سارة أحمد</h4>
+                        <span>منذ ساعتين</span>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <div class="post-content">
+                    <p class="post-text">صباح الخير! يوم جميل للعمل والدراسة 🌅</p>
+                    <img src="https://images.unsplash.com/photo-1506905925346-14b1e0d0f682?w=500&h=300&fit=crop" alt="منظر طبيعي" class="post-image">
+                </div>
+                <div class="post-actions">
+                    <button class="post-action" onclick="toggleLike(this)">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>إعجاب</span>
+                    </button>
+                    <button class="post-action" onclick="toggleComment(this)">
+                        <i class="far fa-comment"></i>
+                        <span>تعليق</span>
+                    </button>
+                    <button class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>مشاركة</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">م</div>
+                    <div class="post-info">
+                        <h4>محمد علي</h4>
+                        <span>منذ 4 ساعات</span>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <div class="post-content">
+                    <p class="post-text">مشاركة رائعة من مؤتمر التكنولوجيا اليوم! تعلمت الكثير من الأشياء الجديدة 💻</p>
+                </div>
+                <div class="post-actions">
+                    <button class="post-action" onclick="toggleLike(this)">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>إعجاب</span>
+                    </button>
+                    <button class="post-action" onclick="toggleComment(this)">
+                        <i class="far fa-comment"></i>
+                        <span>تعليق</span>
+                    </button>
+                    <button class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>مشاركة</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">ف</div>
+                    <div class="post-info">
+                        <h4>فاطمة حسن</h4>
+                        <span>منذ 6 ساعات</span>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <div class="post-content">
+                    <p class="post-text">وصفة جديدة جربتها اليوم - كعكة الشوكولاتة اللذيذة! 🍰</p>
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1c9581?w=500&h=300&fit=crop" alt="كعكة شوكولاتة" class="post-image">
+                </div>
+                <div class="post-actions">
+                    <button class="post-action" onclick="toggleLike(this)">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>إعجاب</span>
+                    </button>
+                    <button class="post-action" onclick="toggleComment(this)">
+                        <i class="far fa-comment"></i>
+                        <span>تعليق</span>
+                    </button>
+                    <button class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>مشاركة</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <!-- Sponsored -->
+            <div class="sponsored">
+                <h3>إعلانات مدفوعة</h3>
+                <a href="#" class="sponsored-item">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=100&h=60&fit=crop" alt="منتج">
+                    <div>
+                        <h4>منتج جديد</h4>
+                        <p>اكتشف أحدث المنتجات</p>
+                    </div>
+                </a>
+                <a href="#" class="sponsored-item">
+                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=100&h=60&fit=crop" alt="خدمة">
+                    <div>
+                        <h4>خدمات متميزة</h4>
+                        <p>احصل على أفضل الخدمات</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Contacts -->
+            <div class="contacts">
+                <h3>جهات الاتصال</h3>
+                <a href="#" class="contact-item">
+                    <div class="contact-avatar">ع</div>
+                    <span class="contact-name">علي محمود</span>
+                    <div class="online-indicator"></div>
+                </a>
+                <a href="#" class="contact-item">
+                    <div class="contact-avatar">ن</div>
+                    <span class="contact-name">نور الدين</span>
+                    <div class="online-indicator"></div>
+                </a>
+                <a href="#" class="contact-item">
+                    <div class="contact-avatar">ي</div>
+                    <span class="contact-name">ياسمين أحمد</span>
+                    <div class="online-indicator"></div>
+                </a>
+                <a href="#" class="contact-item">
+                    <div class="contact-avatar">خ</div>
+                    <span class="contact-name">خالد محمد</span>
+                    <div class="online-indicator"></div>
+                </a>
+                <a href="#" class="contact-item">
+                    <div class="contact-avatar">ر</div>
+                    <span class="contact-name">رامي حسن</span>
+                    <div class="online-indicator"></div>
+                </a>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Create Post Modal -->
+    <div id="createPostModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إنشاء منشور</h3>
+                <button class="close-btn" onclick="closeCreatePostModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <textarea placeholder="ما الذي يدور في ذهنك؟" id="postText"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeCreatePostModal()">إلغاء</button>
+                <button class="btn btn-primary" onclick="createPost()">نشر</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Open create post modal
+        function openCreatePostModal() {
+            document.getElementById('createPostModal').style.display = 'block';
+        }
+
+        // Close create post modal
+        function closeCreatePostModal() {
+            document.getElementById('createPostModal').style.display = 'none';
+            document.getElementById('postText').value = '';
+        }
+
+        // Create new post
+        function createPost() {
+            const postText = document.getElementById('postText').value.trim();
+            if (!postText) return;
+
+            const mainContent = document.querySelector('.main-content');
+            const newPost = document.createElement('div');
+            newPost.className = 'post';
+            newPost.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar">أ</div>
+                    <div class="post-info">
+                        <h4>أحمد محمد</h4>
+                        <span>الآن</span>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <div class="post-content">
+                    <p class="post-text">${postText}</p>
+                </div>
+                <div class="post-actions">
+                    <button class="post-action" onclick="toggleLike(this)">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>إعجاب</span>
+                    </button>
+                    <button class="post-action" onclick="toggleComment(this)">
+                        <i class="far fa-comment"></i>
+                        <span>تعليق</span>
+                    </button>
+                    <button class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>مشاركة</span>
+                    </button>
+                </div>
+            `;
+
+            // Insert after create post section
+            const createPost = document.querySelector('.create-post');
+            createPost.insertAdjacentElement('afterend', newPost);
+
+            closeCreatePostModal();
+        }
+
+        // Toggle like
+        function toggleLike(button) {
+            const icon = button.querySelector('i');
+            const span = button.querySelector('span');
+            
+            if (button.classList.contains('liked')) {
+                button.classList.remove('liked');
+                icon.className = 'far fa-thumbs-up';
+                span.textContent = 'إعجاب';
+            } else {
+                button.classList.add('liked');
+                icon.className = 'fas fa-thumbs-up';
+                span.textContent = 'أعجبني';
+            }
+        }
+
+        // Toggle comment (placeholder)
+        function toggleComment(button) {
+            alert('ميزة التعليقات قيد التطوير!');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('createPostModal');
+            if (event.target === modal) {
+                closeCreatePostModal();
+            }
+        }
+
+        // Add some interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to posts
+            const posts = document.querySelectorAll('.post');
+            posts.forEach(post => {
+                post.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                
+                post.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                });
+            });
+
+            // Add click effects to buttons
+            const buttons = document.querySelectorAll('.btn, .action-btn, .post-action');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+
+            // Simulate online status changes
+            setInterval(() => {
+                const indicators = document.querySelectorAll('.online-indicator');
+                indicators.forEach(indicator => {
+                    if (Math.random() > 0.7) {
+                        indicator.style.background = Math.random() > 0.5 ? '#42b883' : '#65676b';
+                    }
+                });
+            }, 3000);
+        });
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + Enter to create post
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                if (document.getElementById('createPostModal').style.display === 'block') {
+                    createPost();
+                }
+            }
+            
+            // Escape to close modal
+            if (e.key === 'Escape') {
+                closeCreatePostModal();
+            }
+        });
+    </script>
+</body>
+</html>
