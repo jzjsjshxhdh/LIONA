@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الشبكة الاجتماعية - Facebook Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1877f2;
+            --secondary-color: #42b72a;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-primary: #050505;
+            --text-secondary: #65676b;
+            --border-color: #dddfe2;
+            --hover-overlay: #f2f2f2;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Login Page Styles */
+        .login-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 1000px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-left {
+            background: linear-gradient(135deg, #1877f2 0%, #42b72a 100%);
+            padding: 60px 40px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-left h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-left p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .login-right {
+            padding: 60px 40px;
+            background: white;
+        }
+
+        .login-form h2 {
+            color: var(--text-primary);
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary-color), #42b72a);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(24, 119, 242, 0.3);
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-secondary);
+        }
+
+        .toggle-form a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Main App Styles */
+        .app {
+            display: none;
+        }
+
+        .app.active {
+            display: block;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 10px 20px;
+        }
+
+        .header-container {
+            max-width: 1920px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 2em;
+            color: var(--primary-color);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--bg-color);
+            padding: 10px 15px;
+            border-radius: 50px;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 240px;
+            font-size: 0.95em;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-item {
+            padding: 12px 40px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background 0.2s;
+            color: var(--text-secondary);
+            font-size: 1.5em;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: var(--hover-overlay);
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 1.2em;
+            color: var(--text-primary);
+        }
+
+        .icon-btn:hover {
+            background: var(--hover-overlay);
+            transform: scale(1.05);
+        }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .profile-btn:hover {
+            background: var(--hover-overlay);
+        }
+
+        .profile-pic {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-weight: 500;
+        }
+
+        .sidebar-item:hover {
+            background: var(--hover-overlay);
+        }
+
+        .sidebar-item i {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            color: var(--primary-color);
+        }
+
+        /* Feed */
+        .feed {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        /* Create Post */
+        .create-post {
+            padding: 15px;
+        }
+
+        .create-post-top {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .create-post-input {
+            flex: 1;
+            padding: 12px 20px;
+            background: var(--bg-color);
+            border: none;
+            border-radius: 50px;
+            outline: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .create-post-input:hover {
+            background: var(--hover-overlay);
+        }
+
+        .post-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 15px 0;
+        }
+
+        .post-options {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .post-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-weight: 500;
+        }
+
+        .post-option:hover {
+            background: var(--hover-overlay);
+        }
+
+        .post-option i {
+            font-size: 1.3em;
+        }
+
+        .post-option.video i { color: #f02849; }
+        .post-option.photo i { color: #45bd62; }
+        .post-option.feeling i { color: #f7b928; }
+
+        /* Stories */
+        .stories {
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .story {
+            min-width: 110px;
+            height: 190px;
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .story:hover {
+            transform: scale(1.05);
+        }
+
+        .story-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-create {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 20px;
+        }
+
+        .story-create-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin-top: -20px;
+            border: 4px solid white;
+        }
+
+        .story-profile {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .story-name {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Post */
+        .post {
+            padding: 15px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .post-info {
+            flex: 1;
+        }
+
+        .post-author {
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .post-time {
+            color: var(--text-secondary);
+            font-size: 0.85em;
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .post-image {
+            width: calc(100% + 30px);
+            margin: 0 -15px 15px -15px;
+            max-height: 500px;
+            object-fit: cover;
+        }
+
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        .post-stats-item {
+            cursor: pointer;
+            transition: text-decoration 0.2s;
+        }
+
+        .post-stats-item:hover {
+            text-decoration: underline;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .post-action {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .post-action:hover {
+            background: var(--hover-overlay);
+        }
+
+        .post-action.liked {
+            color: var(--primary-color);
+        }
+
+        .post-action i {
+            font-size: 1.2em;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 15px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+        }
+
+        .comment {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .comment-content {
+            background: var(--bg-color);
+            padding: 10px 15px;
+            border-radius: 18px;
+            flex: 1;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-bottom: 3px;
+        }
+
+        .comment-text {
+            font-size: 0.9em;
+        }
+
+        .comment-input-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 10px 15px;
+            background: var(--bg-color);
+            border: none;
+            border-radius: 50px;
+            outline: none;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+
+        .sidebar-section {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            position: relative;
+        }
+
+        .contact-item:hover {
+            background: var(--hover-overlay);
+        }
+
+        .contact-status {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #31a24c;
+            border: 2px solid white;
+        }
+
+        /* Messenger */
+        .messenger-popup {
+            position: fixed;
+            bottom: 0;
+            right: 80px;
+            width: 350px;
+            height: 500px;
+            background: var(--card-bg);
+            border-radius: 10px 10px 0 0;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .messenger-popup.active {
+            display: flex;
+        }
+
+        .messenger-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .messenger-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .message.own {
+            flex-direction: row-reverse;
+        }
+
+        .message-bubble {
+            background: var(--bg-color);
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 70%;
+        }
+
+        .message.own .message-bubble {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .messenger-footer {
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        .messenger-input {
+            flex: 1;
+            padding: 10px 15px;
+            background: var(--bg-color);
+            border: none;
+            border-radius: 50px;
+            outline: none;
+        }
+
+        /* Modal for Create Post */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            font-size: 1.2em;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 1.1em;
+            resize: none;
+            min-height: 150px;
+            font-family: inherit;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-post {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-post:hover {
+            background: #166fe5;
+        }
+
+        .btn-post:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+        }
+
+        /* Notifications Dropdown */
+        .dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 360px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .dropdown.active {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .notification-item {
+            padding: 15px 20px;
+            display: flex;
+            gap: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .notification-item:hover {
+            background: var(--hover-overlay);
+        }
+
+        .notification-item.unread {
+            background: #e7f3ff;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-text {
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            color: var(--primary-color);
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar,
+            .right-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                grid-template-columns: 1fr;
+            }
+
+            .login-left {
+                display: none;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .search-bar input {
+                width: 150px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .post {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Badges */
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #f02849;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        /* Emoji Picker */
+        .emoji-picker {
+            display: none;
+            position: absolute;
+            bottom: 60px;
+            right: 20px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+        }
+
+        .emoji-picker.active {
+            display: grid;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .emoji:hover {
+            transform: scale(1.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <div class="login-left">
+                <h1>الشبكة الاجتماعية</h1>
+                <p>تواصل مع الأصدقاء والعائلة حول العالم. شارك اللحظات المميزة واكتشف محتوى جديد كل يوم.</p>
+            </div>
+            <div class="login-right">
+                <div class="login-form" id="loginForm">
+                    <h2>تسجيل الدخول</h2>
+                    <div class="form-group">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" id="loginEmail" placeholder="أدخل بريدك الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label>كلمة المرور</label>
+                        <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+                    </div>
+                    <button class="btn-primary" onclick="handleLogin()">تسجيل الدخول</button>
+                    <div class="toggle-form">
+                        ليس لديك حساب؟ <a onclick="toggleForm()">إنشاء حساب جديد</a>
+                    </div>
+                </div>
+
+                <div class="login-form" id="signupForm" style="display: none;">
+                    <h2>إنشاء حساب جديد</h2>
+                    <div class="form-group">
+                        <label>الاسم الكامل</label>
+                        <input type="text" id="signupName" placeholder="أدخل اسمك الكامل">
+                    </div>
+                    <div class="form-group">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" id="signupEmail" placeholder="أدخل بريدك الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label>كلمة المرور</label>
+                        <input type="password" id="signupPassword" placeholder="أدخل كلمة المرور">
+                    </div>
+                    <button class="btn-primary" onclick="handleSignup()">إنشاء حساب</button>
+                    <div class="toggle-form">
+                        لديك حساب بالفعل؟ <a onclick="toggleForm()">تسجيل الدخول</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app" id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-container">
+                <div class="header-left">
+                    <div class="logo">
+                        <i class="fab fa-facebook"></i>
+                    </div>
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="بحث">
+                    </div>
+                </div>
+
+                <nav class="header-nav">
+                    <div class="nav-item active" onclick="switchTab('home')">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('videos')">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('marketplace')">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('groups')">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('gaming')">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                </nav>
+
+                <div class="header-right">
+                    <button class="icon-btn" onclick="toggleMessenger()">
+                        <i class="fab fa-facebook-messenger"></i>
+                        <span class="badge">3</span>
+                    </button>
+                    <button class="icon-btn" onclick="toggleNotifications()">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">5</span>
+                    </button>
+                    <div class="profile-btn" onclick="goToProfile()">
+                        <div class="profile-pic" id="headerProfilePic">م</div>
+                        <span id="headerUsername">مستخدم</span>
+                    </div>
+                    <button class="icon-btn" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+
+                <!-- Notifications Dropdown -->
+                <div class="dropdown" id="notificationsDropdown">
+                    <div class="dropdown-header">الإشعارات</div>
+                    <div class="notification-item unread">
+                        <div class="profile-pic">أ</div>
+                        <div class="notification-content">
+                            <div class="notification-text">
+                                <strong>أحمد علي</strong> أعجب بمنشورك
+                            </div>
+                            <div class="notification-time">منذ 5 دقائق</div>
+                        </div>
+                    </div>
+                    <div class="notification-item unread">
+                        <div class="profile-pic">س</div>
+                        <div class="notification-content">
+                            <div class="notification-text">
+                                <strong>سارة محمد</strong> علقت على صورتك
+                            </div>
+                            <div class="notification-time">منذ 15 دقيقة</div>
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="profile-pic">ك</div>
+                        <div class="notification-content">
+                            <div class="notification-text">
+                                <strong>كريم حسن</strong> شارك منشورك
+                            </div>
+                            <div class="notification-time">منذ ساعة</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-item">
+                    <div class="profile-pic" id="sidebarProfilePic">م</div>
+                    <span id="sidebarUsername">مستخدم</span>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-user-friends"></i>
+                    <span>الأصدقاء</span>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>المجموعات</span>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-store"></i>
+                    <span>المتجر</span>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-play-circle"></i>
+                    <span>الفيديوهات</span>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-clock"></i>
+                    <span>الذكريات</span>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-bookmark"></i>
+                    <span>المحفوظات</span>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>الأحداث</span>
+                </div>
+                <div class="sidebar-item">
+                    <i class="fas fa-flag"></i>
+                    <span>الصفحات</span>
+                </div>
+            </aside>
+
+            <!-- Feed -->
+            <section class="feed">
+                <!-- Stories -->
+                <div class="card stories">
+                    <div class="story story-create">
+                        <div class="profile-pic" style="margin-top: -20px;">م</div>
+                        <div class="story-create-btn">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div style="margin-top: 10px; font-weight: 600;">إنشاء قصة</div>
+                    </div>
+                    <div class="story" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="story-profile">أ</div>
+                        <div class="story-name">أحمد علي</div>
+                    </div>
+                    <div class="story" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <div class="story-profile">س</div>
+                        <div class="story-name">سارة محمد</div>
+                    </div>
+                    <div class="story" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <div class="story-profile">ك</div>
+                        <div class="story-name">كريم حسن</div>
+                    </div>
+                    <div class="story" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                        <div class="story-profile">ف</div>
+                        <div class="story-name">فاطمة أحمد</div>
+                    </div>
+                </div>
+
+                <!-- Create Post -->
+                <div class="card create-post">
+                    <div class="create-post-top">
+                        <div class="profile-pic" id="createPostProfilePic">م</div>
+                        <div class="create-post-input" onclick="openCreatePostModal()">
+                            ماذا تفكر يا <span id="createPostUsername">مستخدم</span>؟
+                        </div>
+                    </div>
+                    <div class="post-divider"></div>
+                    <div class="post-options">
+                        <div class="post-option video">
+                            <i class="fas fa-video"></i>
+                            <span>فيديو مباشر</span>
+                        </div>
+                        <div class="post-option photo" onclick="openCreatePostModal()">
+                            <i class="fas fa-image"></i>
+                            <span>صورة/فيديو</span>
+                        </div>
+                        <div class="post-option feeling">
+                            <i class="fas fa-smile"></i>
+                            <span>شعور/نشاط</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Posts Feed -->
+                <div id="postsContainer"></div>
+            </section>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">جهات الاتصال</div>
+                    <div class="contact-item">
+                        <div class="profile-pic">أ</div>
+                        <span>أحمد علي</span>
+                        <div class="contact-status"></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="profile-pic">س</div>
+                        <span>سارة محمد</span>
+                        <div class="contact-status"></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="profile-pic">ك</div>
+                        <span>كريم حسن</span>
+                        <div class="contact-status"></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="profile-pic">ف</div>
+                        <span>فاطمة أحمد</span>
+                        <div class="contact-status"></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="profile-pic">م</div>
+                        <span>محمد خالد</span>
+                        <div class="contact-status"></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="profile-pic">ل</div>
+                        <span>ليلى عمر</span>
+                        <div class="contact-status"></div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">المجموعات المقترحة</div>
+                    <div class="contact-item">
+                        <div class="profile-pic" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span>مجموعة البرمجة</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="profile-pic" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <span>التصميم والفنون</span>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Messenger Popup -->
+        <div class="messenger-popup" id="messengerPopup">
+            <div class="messenger-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="profile-pic">أ</div>
+                    <strong>أحمد علي</strong>
+                </div>
+                <button class="icon-btn" onclick="toggleMessenger()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="messenger-body">
+                <div class="message">
+                    <div class="profile-pic">أ</div>
+                    <div class="message-bubble">مرحباً! كيف حالك؟</div>
+                </div>
+                <div class="message own">
+                    <div class="profile-pic">م</div>
+                    <div class="message-bubble">بخير والحمد لله، أنت كيف حالك؟</div>
+                </div>
+                <div class="message">
+                    <div class="profile-pic">أ</div>
+                    <div class="message-bubble">الحمد لله، شكراً على السؤال 😊</div>
+                </div>
+            </div>
+            <div class="messenger-footer">
+                <input type="text" class="messenger-input" placeholder="اكتب رسالة..." id="messengerInput">
+                <button class="icon-btn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Create Post Modal -->
+        <div class="modal" id="createPostModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">إنشاء منشور</div>
+                    <button class="modal-close" onclick="closeCreatePostModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-user">
+                        <div class="profile-pic" id="modalProfilePic">م</div>
+                        <strong id="modalUsername">مستخدم</strong>
+                    </div>
+                    <textarea class="modal-textarea" id="postContent" placeholder="ماذا تفكر؟"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-post" onclick="createPost()">نشر</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global State
+        let currentUser = null;
+        let posts = [
+            {
+                id: 1,
+                author: 'أحمد علي',
+                authorInitial: 'أ',
+                time: 'منذ ساعة',
+                content: 'يوم رائع في المكتب! تم إنجاز الكثير من العمل اليوم 🎉',
+                image: null,
+                likes: 45,
+                comments: [
+                    { author: 'سارة محمد', authorInitial: 'س', text: 'رائع! استمر في التقدم 👏' },
+                    { author: 'كريم حسن', authorInitial: 'ك', text: 'مبارك عليك الإنجاز' }
+                ],
+                shares: 5,
+                liked: false
+            },
+            {
+                id: 2,
+                author: 'سارة محمد',
+                authorInitial: 'س',
+                time: 'منذ ساعتين',
+                content: 'شروق الشمس اليوم كان خيالياً 🌅',
+                image: null,
+                likes: 128,
+                comments: [
+                    { author: 'فاطمة أحمد', authorInitial: 'ف', text: 'صورة رائعة جداً! 😍' }
+                ],
+                shares: 12,
+                liked: false
+            },
+            {
+                id: 3,
+                author: 'كريم حسن',
+                authorInitial: 'ك',
+                time: 'منذ 3 ساعات',
+                content: 'من يريد الذهاب لتناول القهوة اليوم؟ ☕',
+                image: null,
+                likes: 23,
+                comments: [],
+                shares: 2,
+                liked: false
+            }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPosts();
+        });
+
+        // Authentication
+        function toggleForm() {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+            }
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                alert('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
+                return;
+            }
+
+            // Get stored user or use default
+            const storedUser = localStorage.getItem('user');
+            if (storedUser) {
+                currentUser = JSON.parse(storedUser);
+            } else {
+                currentUser = { name: email.split('@')[0], email: email };
+            }
+
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showApp();
+        }
+
+        function handleSignup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            if (!name || !email || !password) {
+                alert('الرجاء ملء جميع الحقول');
+                return;
+            }
+
+            currentUser = { name: name, email: email };
+            localStorage.setItem('user', JSON.stringify(currentUser));
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showApp();
+        }
+
+        function handleLogout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('currentUser');
+                currentUser = null;
+                document.getElementById('app').classList.remove('active');
+                document.getElementById('loginPage').style.display = 'flex';
+            }
+        }
+
+        function showApp() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('app').classList.add('active');
+            updateUserInfo();
+            renderPosts();
+        }
+
+        function updateUserInfo() {
+            const initial = currentUser.name.charAt(0).toUpperCase();
+            const elements = [
+                'headerProfilePic', 'sidebarProfilePic', 
+                'createPostProfilePic', 'modalProfilePic'
+            ];
+            
+            elements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = initial;
+            });
+
+            const nameElements = [
+                'headerUsername', 'sidebarUsername', 
+                'createPostUsername', 'modalUsername'
+            ];
+            
+            nameElements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = currentUser.name;
+            });
+        }
+
+        // Posts
+        function renderPosts() {
+            const container = document.getElementById('postsContainer');
+            if (!container) return;
+
+            container.innerHTML = posts.map(post => `
+                <div class="card post">
+                    <div class="post-header">
+                        <div class="profile-pic">${post.authorInitial}</div>
+                        <div class="post-info">
+                            <div class="post-author">${post.author}</div>
+                            <div class="post-time">${post.time}</div>
+                        </div>
+                        <button class="icon-btn">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </div>
+                    <div class="post-content">${post.content}</div>
+                    ${post.image ? `<img src="${post.image}" class="post-image" alt="Post">` : ''}
+                    <div class="post-stats">
+                        <div class="post-stats-item">
+                            <i class="fas fa-thumbs-up" style="color: var(--primary-color);"></i>
+                            ${post.likes} إعجاب
+                        </div>
+                        <div class="post-stats-item">
+                            ${post.comments.length} تعليق • ${post.shares} مشاركة
+                        </div>
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-action ${post.liked ? 'liked' : ''}" onclick="toggleLike(${post.id})">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span>أعجبني</span>
+                        </div>
+                        <div class="post-action" onclick="focusComment(${post.id})">
+                            <i class="fas fa-comment"></i>
+                            <span>تعليق</span>
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share"></i>
+                            <span>مشاركة</span>
+                        </div>
+                    </div>
+                    ${post.comments.length > 0 ? `
+                        <div class="comments-section">
+                            ${post.comments.map(comment => `
+                                <div class="comment">
+                                    <div class="profile-pic">${comment.authorInitial}</div>
+                                    <div class="comment-content">
+                                        <div class="comment-author">${comment.author}</div>
+                                        <div class="comment-text">${comment.text}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="comment-input-wrapper">
+                        <div class="profile-pic">${currentUser ? currentUser.name.charAt(0) : 'م'}</div>
+                        <input type="text" class="comment-input" id="comment-${post.id}" placeholder="اكتب تعليقاً..." onkeypress="handleCommentKeyPress(event, ${post.id})">
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleLike(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.liked = !post.liked;
+                post.likes += post.liked ? 1 : -1;
+                renderPosts();
+            }
+        }
+
+        function focusComment(postId) {
+            const input = document.getElementById(`comment-${postId}`);
+            if (input) input.focus();
+        }
+
+        function handleCommentKeyPress(event, postId) {
+            if (event.key === 'Enter') {
+                const input = event.target;
+                const text = input.value.trim();
+                
+                if (text) {
+                    const post = posts.find(p => p.id === postId);
+                    if (post && currentUser) {
+                        post.comments.push({
+                            author: currentUser.name,
+                            authorInitial: currentUser.name.charAt(0),
+                            text: text
+                        });
+                        renderPosts();
+                    }
+                }
+            }
+        }
+
+        // Create Post
+        function openCreatePostModal() {
+            document.getElementById('createPostModal').classList.add('active');
+        }
+
+        function closeCreatePostModal() {
+            document.getElementById('createPostModal').classList.remove('active');
+            document.getElementById('postContent').value = '';
+        }
+
+        function createPost() {
+            const content = document.getElementById('postContent').value.trim();
+            
+            if (!content) {
+                alert('الرجاء كتابة شيء ما');
+                return;
+            }
+
+            if (!currentUser) {
+                alert('يجب تسجيل الدخول أولاً');
+                return;
+            }
+
+            const newPost = {
+                id: Date.now(),
+                author: currentUser.name,
+                authorInitial: currentUser.name.charAt(0),
+                time: 'الآن',
+                content: content,
+                image: null,
+                likes: 0,
+                comments: [],
+                shares: 0,
+                liked: false
+            };
+
+            posts.unshift(newPost);
+            renderPosts();
+            closeCreatePostModal();
+        }
+
+        // Messenger
+        function toggleMessenger() {
+            const popup = document.getElementById('messengerPopup');
+            popup.classList.toggle('active');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messengerInput');
+            const text = input.value.trim();
+            
+            if (text) {
+                const messageBody = document.querySelector('.messenger-body');
+                const messageHTML = `
+                    <div class="message own">
+                        <div class="profile-pic">${currentUser ? currentUser.name.charAt(0) : 'م'}</div>
+                        <div class="message-bubble">${text}</div>
+                    </div>
+                `;
+                messageBody.innerHTML += messageHTML;
+                input.value = '';
+                messageBody.scrollTop = messageBody.scrollHeight;
+            }
+        }
+
+        // Notifications
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notificationsDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Navigation
+        function switchTab(tab) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Here you can add logic to show different content based on tab
+            console.log('Switched to tab:', tab);
+        }
+
+        function goToProfile() {
+            alert('صفحة الملف الشخصي قيد التطوير');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const notificationsDropdown = document.getElementById('notificationsDropdown');
+            const notificationsBtn = event.target.closest('.icon-btn');
+            
+            if (!notificationsBtn && notificationsDropdown && !notificationsDropdown.contains(event.target)) {
+                notificationsDropdown.classList.remove('active');
+            }
+        });
+
+        // Check if user is already logged in
+        const storedUser = localStorage.getItem('currentUser');
+        if (storedUser) {
+            currentUser = JSON.parse(storedUser);
+            showApp();
+        }
+    </script>
+</body>
+</html>
